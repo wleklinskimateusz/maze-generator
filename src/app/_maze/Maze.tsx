@@ -1,4 +1,3 @@
-import { select } from "d3";
 import { generateMaze } from "./maze";
 
 type MazeProps = {

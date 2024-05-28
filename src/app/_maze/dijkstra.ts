@@ -6,21 +6,23 @@ export function dijkstra(
   start: number,
   end: number
 ) {
-  const distances = {};
-  const previous = {};
-  const queue = [];
+  const queue: number[] = nodes.map((node) => node.id);
+  const distances = nodes.reduce(
+    (acc, node) => ({ ...acc, [node.id]: Infinity }),
+    {} as Record<number, number>
+  );
+  const previous: Record<number, number | null> = nodes.reduce(
+    (acc, node) => ({ ...acc, [node.id]: null }),
+    {}
+  );
 
-  nodes.forEach((node) => {
-    distances[node.id] = Infinity;
-    previous[node.id] = null;
-    queue.push(node.id);
-  });
   distances[start] = 0;
 
   while (queue.length > 0) {
     queue.sort((a, b) => distances[a] - distances[b]);
     const u = queue.shift();
     if (u === end) break;
+    if (u === undefined) throw new Error("Queue is empty");
 
     const neighbors = links.filter(
       (link) => link.source === u || link.target === u
@@ -36,8 +38,8 @@ export function dijkstra(
   }
 
   const path = [];
-  let u = end;
-  while (previous[u] !== null) {
+  let u: number | null = end;
+  while (u !== null && previous[u] !== null) {
     path.unshift(u);
     u = previous[u];
   }
