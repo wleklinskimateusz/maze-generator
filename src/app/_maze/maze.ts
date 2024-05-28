@@ -5,32 +5,29 @@ import { kruskal } from "./kruskal";
 export function generateMaze(n: number) {
   // Function to create a grid graph
   function createGridGraph(n: number) {
-    const nodes = new Array(n)
-      .fill(null)
-      .map((_, i) =>
-        new Array(n).fill(null).map((_, j) => ({
-          id: i * n + j,
-          x: j,
-          y: i,
-        }))
-      )
-      .flat();
+    const nodes = new Array(n).fill(null).flatMap((_, i) =>
+      new Array(n).fill(null).map((_, j) => ({
+        id: i * n + j,
+        x: j,
+        y: i,
+      }))
+    );
 
-    const links = new Array(n - 1)
-      .fill(null)
-      .map((_, i) =>
-        new Array(n - 1).fill(null).map((_, j) => ({
-          source: i * n + j,
-          target: i * n + j + 1,
-          weight: Math.random(),
-        }))
-      )
-      .flat();
+    const links = nodes.flatMap((node) => {
+      const { id, x, y } = node;
+      if (x === n - 1 && y === n - 1) return [];
+      if (x === n - 1)
+        return [{ source: id, target: id + n, weight: Math.random() }];
+      if (y === n - 1)
+        return [{ source: id, target: id + 1, weight: Math.random() }];
+      return [
+        { source: id, target: id + 1, weight: Math.random() },
+        { source: id, target: id + n, weight: Math.random() },
+      ];
+    });
 
     return { nodes, links };
   }
-
-  // Dijkstra's algorithm to find the shortest path
 
   // Create the grid graph
   const { nodes, links } = createGridGraph(n);

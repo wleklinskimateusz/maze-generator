@@ -1,6 +1,4 @@
-"use client";
 import { select } from "d3";
-import { useEffect, useLayoutEffect, useRef } from "react";
 import { generateMaze } from "./maze";
 
 type MazeProps = {
@@ -10,8 +8,6 @@ type MazeProps = {
 };
 
 export const Maze = () => {
-  const svgRef = useRef<SVGSVGElement>(null);
-  const svgElement = select(svgRef.current);
   const n = 20;
   const width = 600;
   const height = 600;
@@ -19,7 +15,7 @@ export const Maze = () => {
   const maze = generateMaze(n);
 
   return (
-    <svg ref={svgRef} width={width} height={height}>
+    <svg width={width} height={height}>
       {maze.flat().map((cell, i) => (
         <rect
           key={i}
