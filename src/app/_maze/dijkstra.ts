@@ -20,19 +20,19 @@ export function dijkstra(
 
   while (queue.length > 0) {
     queue.sort((a, b) => distances[a] - distances[b]);
-    const u = queue.shift();
-    if (u === end) break;
-    if (u === undefined) throw new Error("Queue is empty");
+    const current = queue.shift();
+    if (current === end) break;
+    if (current === undefined) throw new Error("Queue is empty");
 
     const neighbors = links.filter(
-      (link) => link.source === u || link.target === u
+      (link) => link.source === current || link.target === current
     );
     neighbors.forEach((neighbor) => {
-      const v = neighbor.source === u ? neighbor.target : neighbor.source;
-      const alt = distances[u] + neighbor.weight;
+      const v = neighbor.source === current ? neighbor.target : neighbor.source;
+      const alt = distances[current] + neighbor.weight;
       if (alt < distances[v]) {
         distances[v] = alt;
-        previous[v] = u;
+        previous[v] = current;
       }
     });
   }

@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { Maze } from "./_maze/Maze";
+import { MazeGrid } from "./Maze";
 
 export default function Home() {
-  return <Maze />;
+  return <MazeGrid />;
 }
